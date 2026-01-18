@@ -5,23 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkyGuardian | Weather Intelligence</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f8f9fa; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; padding: 20px; text-align: center; }
-        .container { max-width: 1100px; margin: auto; }
-        .header { margin-bottom: 30px; }
-        .btn-refresh { background: var(--accent); color: white; border: none; padding: 10px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .btn-refresh:hover { background: #2980b9; }
+        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f4f7f6; --online: #2ecc71; --offline: #e74c3c; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--primary); }
+        .container { max-width: 1000px; margin: auto; }
+        .header { text-align: center; margin-bottom: 30px; }
         
-        /* Stats Grid */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        /* Status Bar */
+        .status-bar { display: flex; align-items: center; justify-content: center; background: white; padding: 10px; border-radius: 50px; width: fit-content; margin: 0 auto 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; background: #95a5a6; }
         
         /* Analysis Box */
-        .analysis-box { background: #e1f5fe; padding: 20px; border-radius: 12px; border-left: 8px solid var(--accent); text-align: left; margin-bottom: 30px; }
+        .analysis-card { background: #d1ecf1; border-left: 5px solid #0c5460; padding: 15px; border-radius: 8px; margin-bottom: 25px; text-align: left; }
         
-        /* Historical Section */
-        .history { background: white; padding: 20px; border-radius: 12px; margin-top: 20px; }
-        iframe { border: none; width: 100%; height: 300px; }
+        /* Data Display */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
+        iframe { border: none; width: 100%; height: 250px; border-radius: 8px; }
+        
+        .refresh-btn { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+        .refresh-btn:hover { background: #2980b9; }
     </style>
 </head>
 <body>
@@ -29,62 +31,70 @@
 <div class="container">
     <div class="header">
         <h1>SkyGuardian Intelligence</h1>
-        <p>Live Hyper-Local Weather Analytics</p>
-        <button class="btn-refresh" onclick="location.reload()">Refresh Live Data</button>
+        <div class="status-bar">
+            <div id="status-dot" class="dot"></div>
+            <span id="status-text">Checking System...</span>
+        </div>
+        <button class="refresh-btn" onclick="location.reload()">Manual Refresh</button>
     </div>
 
-    <div class="analysis-box">
-        <h3>💡 Live Suggestions</h3>
-        <p id="suggestion">Analyzing current atmosphere...</p>
+    <div class="analysis-card">
+        <strong>💡 Intelligence Insight:</strong>
+        <span id="insight-text">Gathering data for analysis...</span>
     </div>
 
     <div class="grid">
-        <div class="card">
-            <h3>Current Temperature</h3>
-            <iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/1"></iframe>
-        </div>
-        <div class="card">
-            <h3>Humidity Levels</h3>
-            <iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/2"></iframe>
-        </div>
-        <div class="card">
-            <h3>Atmospheric Pressure</h3>
-            <iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/3"></iframe>
-        </div>
+        <div class="card"><h3>Live Temperature</h3><iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/1"></iframe></div>
+        <div class="card"><h3>Live Humidity</h3><iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/2"></iframe></div>
+        <div class="card"><h3>Live Pressure</h3><iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/3"></iframe></div>
     </div>
 
-    <div class="history">
-        <h3>24-Hour Historical Trends</h3>
-        <iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/charts/1?dynamic=true&results=100&title=Temperature+History&type=line"></iframe>
+    <div class="card" style="margin-top:20px;">
+        <h3>24-Hour Historical Trend</h3>
+        <iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/charts/1?dynamic=true&results=60&title=Temperature+Trend&type=line"></iframe>
     </div>
 </div>
 
 <script>
-    // Simple Data Analysis Logic
-    async function analyzeData() {
-        const channelID = 'YOUR_CHANNEL_ID';
+    async function updateDashboard() {
+        const chanID = 'YOUR_CHANNEL_ID';
         const apiKey = 'YOUR_READ_API_KEY';
-        const url = `https://api.thingspeak.com/channels/${channelID}/feeds/last.json?api_key=${apiKey}`;
+        const url = `https://api.thingspeak.com/channels/${chanID}/feeds/last.json?api_key=${apiKey}`;
 
         try {
-            const response = await fetch(url);
-            const data = await response.json();
+            const res = await fetch(url);
+            const data = await res.json();
+            
+            // 1. ONLINE STATUS LOGIC
+            const lastUpdate = new Date(data.created_at);
+            const diff = (new Date() - lastUpdate) / 1000 / 60; // Minutes
+            const dot = document.getElementById('status-dot');
+            const text = document.getElementById('status-text');
+
+            if (diff < 2.5) {
+                dot.style.background = "#2ecc71";
+                text.innerText = "System Online";
+            } else {
+                dot.style.background = "#e74c3c";
+                text.innerText = "Offline (Last sync: " + Math.round(diff) + "m ago)";
+            }
+
+            // 2. DATA ANALYSIS LOGIC
             const temp = parseFloat(data.field1);
             const press = parseFloat(data.field3);
-            let msg = "";
+            let insight = "";
 
-            if (press < 1010) msg = "⚠️ Storm Warning: Pressure is dropping. Secure outdoor items.";
-            else if (temp > 30) msg = "☀️ High Heat: Ensure ventilation and stay hydrated.";
-            else if (temp < 10) msg = "❄️ Frost Risk: Protect sensitive plants tonight.";
-            else msg = "✅ Stable Conditions: No immediate weather threats detected.";
+            if (press < 1010) insight = "Atmospheric pressure is low. High probability of rain/storm soon.";
+            else if (temp > 32) insight = "Excessive heat detected. Recommend activating cooling systems.";
+            else insight = "Weather patterns are stable. No immediate action required.";
+            
+            document.getElementById('insight-text').innerText = insight;
 
-            document.getElementById('suggestion').innerText = msg;
-        } catch (e) {
-            document.getElementById('suggestion').innerText = "Awaiting live data stream...";
-        }
+        } catch (e) { document.getElementById('status-text').innerText = "Connection Error"; }
     }
-    analyzeData();
-</script>
 
+    updateDashboard();
+    setInterval(updateDashboard, 30000); // Auto-update every 30s
+</script>
 </body>
 </html>
