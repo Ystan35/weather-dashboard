@@ -3,51 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyGuardian | TechNOVA Sdn. Bhd.</title>
+    <title>SkyGuardian Pro | TechNOVA Sdn. Bhd.</title>
     <style>
-        :root { --agri-green: #27ae60; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
-        .container { max-width: 1200px; margin: auto; }
+        :root { --agri-green: #27ae60; --bg: #f4f7f6; --card-bg: #ffffff; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 20px; color: #2c3e50; }
+        .container { max-width: 1400px; margin: auto; }
         
-        .header { background: white; padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        /* Header */
+        .header { background: var(--card-bg); padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         h1 { color: var(--agri-green); margin: 0; font-size: 2.2em; }
-        
-        .status-container { display: flex; align-items: center; justify-content: center; margin-top: 12px; font-weight: 600; }
+        .status-container { display: flex; align-items: center; justify-content: center; margin-top: 10px; font-weight: 600; }
         .status-dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; background: #bdc3c7; }
 
-        /* FIXED: Force 3 Gauges in one horizontal line */
+        /* Section Titles */
+        .section-title { text-align: center; margin: 40px 0 20px; font-size: 1.5em; color: #7f8c8d; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* Grid System for Gauges and History */
         .grid { 
             display: flex; 
             flex-direction: row; 
             flex-wrap: nowrap; 
             justify-content: center; 
             gap: 20px; 
-            margin: 30px 0;
         }
+
         .card { 
-            background: white; 
+            background: var(--card-bg); 
             padding: 20px; 
             border-radius: 15px; 
             text-align: center; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.03);
             flex: 1;
             min-width: 0; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .analysis-box { background: white; border-left: 10px solid var(--agri-green); padding: 25px; border-radius: 15px; margin-bottom: 30px; }
-        iframe { border: none; width: 100%; height: 260px; border-radius: 12px; }
+        iframe { border: none; width: 100%; height: 260px; border-radius: 10px; }
+        
+        /* Specific sizing for History Charts to keep them centered and readable */
+        .history-card iframe { height: 300px; }
 
         .footer { 
             text-align: center; 
-            margin-top: 50px; 
+            margin-top: 60px; 
             padding: 30px; 
             color: #95a5a6; 
-            font-size: 0.95em; 
+            font-size: 0.9em; 
             border-top: 1px solid #dcdde1; 
         }
 
-        /* Responsive: Stack only on mobile screens */
-        @media (max-width: 850px) {
+        /* Mobile Adjustments */
+        @media (max-width: 1000px) {
             .grid { flex-wrap: wrap; }
             .card { flex: 1 1 100%; }
         }
@@ -57,64 +65,61 @@
 
 <div class="container">
     <div class="header">
-        <h1>SkyGuardian | Agricultural Node</h1>
+        <h1>SkyGuardian | TechNOVA Agri-Node</h1>
         <div class="status-container">
             <div id="status-dot" class="status-dot"></div>
-            <span id="status-text">Fetching live data...</span>
+            <span id="status-text">Connecting to Node...</span>
         </div>
     </div>
 
-    <div class="analysis-box">
-        <h3>🚜 TechNOVA Field Intelligence</h3>
-        <p id="insight-text" style="font-size: 1.15em;">Analyzing environment...</p>
-    </div>
-
+    <div class="section-title">Real-Time Status</div>
     <div class="grid">
         <div class="card"><h3>Ambient Temperature</h3><iframe src="https://thingspeak.com/channels/3231323/widgets/1206428"></iframe></div>
         <div class="card"><h3>Canopy Humidity</h3><iframe src="https://thingspeak.com/channels/3231323/widgets/1206435"></iframe></div>
         <div class="card"><h3>Atmospheric Pressure</h3><iframe src="https://thingspeak.com/channels/3231323/widgets/1206436"></iframe></div>
     </div>
 
-    <div class="card" style="width: 100%; box-sizing: border-box;">
-        <h3>24-Hour Environmental History</h3>
-        <iframe src="https://thingspeak.com/channels/3231323/charts/1?dynamic=true&results=60&color=27ae60"></iframe>
+    <div class="section-title">24-Hour Analytics</div>
+    <div class="grid">
+        <div class="card history-card">
+            <h3>Temperature History</h3>
+            <iframe src="https://thingspeak.com/channels/3231323/charts/1?dynamic=true&results=60&color=e67e22"></iframe>
+        </div>
+        <div class="card history-card">
+            <h3>Humidity History</h3>
+            <iframe src="https://thingspeak.com/channels/3231323/charts/2?dynamic=true&results=60&color=3498db"></iframe>
+        </div>
+        <div class="card history-card">
+            <h3>Pressure History</h3>
+            <iframe src="https://thingspeak.com/channels/3231323/charts/3?dynamic=true&results=60&color=9b59b6"></iframe>
+        </div>
     </div>
 
     <footer class="footer">
-        &copy; TechNOVA Sdn. Bhd. 2026 | Developed for High-Precision Agriculture
+        &copy; TechNOVA Sdn. Bhd. (2026) | "Precision Data for Future Growth"
     </footer>
 </div>
 
 <script>
     async function fetchAgriData() {
         const url = `https://api.thingspeak.com/channels/3231323/feeds/last.json?api_key=PXZJ8EKXDGBQM64P`;
-
         try {
             const res = await fetch(url);
             const data = await res.json();
-            
             if (data && data.created_at) {
-                const lastSeen = new Date(data.created_at);
-                const now = new Date();
-                const secondsAgo = Math.floor((now - lastSeen) / 1000);
-                
+                const diff = Math.floor((new Date() - new Date(data.created_at)) / 1000);
                 const dot = document.getElementById('status-dot');
                 const label = document.getElementById('status-text');
 
-                // FIXED: Removed NaNm error with valid number check
-                if (!isNaN(secondsAgo) && secondsAgo < 120) {
+                if (!isNaN(diff) && diff < 120) {
                     dot.style.background = "#2ecc71";
-                    label.innerText = "Field Node: Online (Active Now)";
+                    label.innerText = "TechNOVA Node: Online (Live)";
                 } else {
                     dot.style.background = "#e74c3c";
-                    const mins = Math.floor(secondsAgo / 60) || 0;
-                    label.innerText = `Field Node: Offline (${mins}m ago)`;
+                    label.innerText = `TechNOVA Node: Offline (${Math.floor(diff/60) || 0}m ago)`;
                 }
-
-                const T = parseFloat(data.field1);
-                document.getElementById('insight-text').innerText = T > 20 ? "✅ OPTIMAL: Current temperature supports efficient photosynthesis." : "⚠️ NOTICE: Monitoring cool spell.";
             }
-        } catch (e) { console.error("Sync Error"); }
+        } catch (e) { console.error("Cloud Error"); }
     }
     fetchAgriData();
     setInterval(fetchAgriData, 15000);
