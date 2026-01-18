@@ -55,14 +55,14 @@
 
     <div class="card" style="margin-top: 30px;">
         <h3>24-Hour Environmental Trends</h3>
-        <iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/charts/1?dynamic=true&results=60&title=Temperature+History&type=line&color=27ae60"></iframe>
+        <iframe src="https://thingspeak.com/channels/3231323/charts/1?dynamic=true&results=60&title=Temperature+History&type=line&color=27ae60"></iframe>
     </div>
 </div>
 
 <script>
     async function fetchAgriData() {
-        const chanID = 'YOUR_CHANNEL_ID';
-        const readKey = 'YOUR_READ_API_KEY';
+        const chanID = '3231323';
+        const apiKey = 'PXZJ8EKXDGBQM64P';
         const url = `https://api.thingspeak.com/channels/${chanID}/feeds/last.json?api_key=${readKey}`;
 
         try {
@@ -110,5 +110,6 @@
 
 </body>
 </html>
+
 
 
