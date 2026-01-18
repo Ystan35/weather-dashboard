@@ -3,22 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyGuardian Pro | TechNOVA</title>
+    <title>SkyGuardian | TechNOVA </title>
     <style>
-        :root { --agri-green: #27ae60; --error-red: #e74c3c; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 10px; }
-        .container { max-width: 1400px; margin: auto; }
+        :root { --agri-green: #27ae60; --error-red: #e74c3c; --bg: #f4f7f6; --text: #2c3e50; }
         
-        /* Header & Mobile-Friendly Refresh */
-        .header { 
-            background: white; padding: 25px; border-radius: 20px; 
-            text-align: center; margin-bottom: 25px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05); 
-            position: relative; 
-        }
-        h1 { color: var(--agri-green); margin: 0; font-size: 1.8em; }
-        
-        /* Offline Alert Popup Style */
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 10px; }
+        .container { max-width: 1200px; margin: auto; }
+
+        /* Offline Alert - Professional Banner */
         #offline-alert {
             display: none;
             background: var(--error-red);
@@ -26,102 +18,161 @@
             padding: 15px;
             text-align: center;
             font-weight: bold;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            animation: shake 0.5s;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+            animation: slideDown 0.5s ease;
         }
 
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            100% { transform: translateX(0); }
-        }
+        @keyframes slideDown { from { transform: translateY(-20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
+        /* Header & Action Button */
+        .header { 
+            background: white; padding: 25px; border-radius: 20px; 
+            text-align: center; margin-bottom: 25px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        h1 { color: var(--agri-green); margin: 0; font-size: 1.8em; letter-spacing: -1px; }
+        
         .refresh-btn {
             position: absolute; right: 20px; top: 25px;
             background: var(--agri-green); color: white; border: none;
-            padding: 8px 16px; border-radius: 8px; cursor: pointer;
-            font-weight: bold;
+            padding: 10px 18px; border-radius: 10px; cursor: pointer;
+            font-weight: bold; transition: 0.3s;
         }
+        .refresh-btn:hover { background: #1e8449; transform: scale(1.05); }
 
-        /* Responsive Grid: Row on Desktop, Column on Mobile */
+        .status-bar { display: flex; align-items: center; justify-content: center; margin-top: 12px; font-weight: 600; font-size: 0.9em; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; background: #bdc3c7; }
+
+        .section-title { text-align: center; margin: 30px 0 15px; color: #7f8c8d; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9em; }
+
+        /* THE GRID: Row on Desktop, Column on Mobile */
         .grid { 
             display: flex; 
-            flex-flow: row wrap; /* Key for mobile view */
+            flex-flow: row wrap; 
             justify-content: center; 
-            gap: 15px; 
-            margin-bottom: 20px;
+            gap: 20px; 
         }
 
-        /* Card Geometry */
+        /* THE CARD: True Centering Logic */
         .card { 
-            background: white; padding: 15px; border-radius: 15px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            flex: 1 1 300px; /* Force wrap on mobile */
+            background: white; padding: 20px; border-radius: 18px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            flex: 1 1 320px; 
+            max-width: 100%;
             display: flex; flex-direction: column; 
-            align-items: center; justify-content: center;
-            max-width: 450px;
+            align-items: center;    /* Horizontal Center */
+            justify-content: center; /* Vertical Center */
+            box-sizing: border-box;
+        }
+        .card h3 { margin-bottom: 15px; font-size: 1.1em; color: var(--text); }
+
+        /* IFRAME CENTERING: Forces 100% alignment on Mobile */
+        iframe { 
+            border: none; 
+            width: 100% !important; 
+            max-width: 300px; /* Fixed width for ThingSpeak widgets */
+            height: 260px; 
+            display: block;
+            margin: 0 auto;  /* Critical for Mobile Centering */
         }
 
-        iframe { border: none; width: 100%; height: 260px; border-radius: 10px; }
-        .history-card { flex: 1 1 400px; }
+        .history-card { flex: 1 1 500px; }
+        .history-card iframe { max-width: 100%; height: 320px; }
 
-        /* Mobile Specifics */
+        .footer { text-align: center; margin-top: 50px; padding: 20px; color: #95a5a6; font-size: 0.85em; }
+
+        /* RESPONSIVE OVERRIDES */
         @media (max-width: 768px) {
-            h1 { font-size: 1.3em; text-align: left; padding-right: 60px; }
-            .refresh-btn { top: 15px; right: 10px; padding: 5px 10px; font-size: 0.7em; }
-            .card { flex: 1 1 100%; max-width: 100%; }
+            h1 { font-size: 1.4em; text-align: left; padding-right: 100px; }
+            .refresh-btn { top: 22px; padding: 8px 12px; font-size: 0.8em; }
+            .card { flex: 1 1 100%; }
+            iframe { max-width: 280px; } /* Fits small screens perfectly */
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div id="offline-alert">⚠️ ALERT: SkyGuardian Node is OFFLINE. Check Field Power.</div>
+    <div id="offline-alert">⚠️ SYSTEM OFFLINE: SkyGuardian Node heartbeat lost. Check field power.</div>
 
     <div class="header">
         <h1>SkyGuardian Hub</h1>
         <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
-        <div id="status-text" style="font-weight: bold; margin-top:10px; color: #7f8c8d;">Connecting...</div>
+        <div class="status-bar">
+            <div id="status-dot" class="dot"></div>
+            <span id="status-text">Synchronizing Data...</span>
+        </div>
     </div>
 
+    <div class="section-title">Field Environment Gauges</div>
     <div class="grid">
-        <div class="card"><h3>Temperature</h3><iframe src="https://thingspeak.com/channels/3231323/widgets/1206428"></iframe></div>
-        <div class="card"><h3>Humidity</h3><iframe src="https://thingspeak.com/channels/3231323/widgets/1206435"></iframe></div>
-        <div class="card"><h3>Pressure</h3><iframe src="https://thingspeak.com/channels/3231323/widgets/1206436"></iframe></div>
+        <div class="card">
+            <h3>Temperature</h3>
+            <iframe src="https://thingspeak.com/channels/3231323/widgets/1206428"></iframe>
+        </div>
+        <div class="card">
+            <h3>Humidity</h3>
+            <iframe src="https://thingspeak.com/channels/3231323/widgets/1206435"></iframe>
+        </div>
+        <div class="card">
+            <h3>Pressure (Sim)</h3>
+            <iframe src="https://thingspeak.com/channels/3231323/widgets/1206436"></iframe>
+        </div>
     </div>
 
+    <div class="section-title">24-Hour Analytical Trends</div>
     <div class="grid">
-        <div class="card history-card"><h3>24h Temp</h3><iframe src="https://thingspeak.com/channels/3231323/charts/1?dynamic=true&results=15&color=e67e22"></iframe></div>
-        <div class="card history-card"><h3>24h Humidity</h3><iframe src="https://thingspeak.com/channels/3231323/charts/2?dynamic=true&results=15&color=3498db"></iframe></div>
+        <div class="card history-card">
+            <h3>Temperature History</h3>
+            <iframe src="https://thingspeak.com/channels/3231323/charts/1?dynamic=true&results=20&color=e67e22"></iframe>
+        </div>
+        <div class="card history-card">
+            <h3>Humidity History</h3>
+            <iframe src="https://thingspeak.com/channels/3231323/charts/2?dynamic=true&results=20&color=3498db"></iframe>
+        </div>
     </div>
 
-    <footer style="text-align: center; padding: 30px; color: #95a5a6;">
-        &copy; TechNOVA Sdn. Bhd. 2026
+    <footer class="footer">
+        &copy; TechNOVA Sdn. Bhd. 2026 | Precision Agricultural Intelligence
     </footer>
 </div>
 
 <script>
     async function fetchAgriData() {
+        const url = `https://api.thingspeak.com/channels/3231323/feeds/last.json?api_key=PXZJ8EKXDGBQM64P`;
         try {
-            const res = await fetch(`https://api.thingspeak.com/channels/3231323/feeds/last.json?api_key=PXZJ8EKXDGBQM64P`);
+            const res = await fetch(url);
             const data = await res.json();
+            
             if (data && data.created_at) {
-                const diff = Math.floor((new Date() - new Date(data.created_at)) / 1000);
+                const lastSeen = new Date(data.created_at);
+                const now = new Date();
+                const diff = Math.floor((now - lastSeen) / 1000);
+                
                 const alertBox = document.getElementById('offline-alert');
-                const statusLabel = document.getElementById('status-text');
+                const dot = document.getElementById('status-dot');
+                const label = document.getElementById('status-text');
 
-                if (!isNaN(diff) && diff < 150) { // If updated within 2.5 mins
+                // If data is older than 2.5 minutes (150 seconds)
+                if (!isNaN(diff) && diff < 150) {
                     alertBox.style.display = "none";
-                    statusLabel.innerHTML = "Status: <span style='color:#27ae60'>ONLINE (LIVE)</span>";
+                    dot.style.background = "#2ecc71";
+                    label.innerHTML = "Status: <span style='color:#27ae60'>ONLINE (LIVE)</span>";
                 } else {
                     alertBox.style.display = "block";
-                    statusLabel.innerHTML = "Status: <span style='color:#e74c3c'>OFFLINE</span>";
+                    dot.style.background = "#e74c3c";
+                    label.innerHTML = `Status: <span style='color:#e74c3c'>OFFLINE (${Math.floor(diff/60) || 0}m ago)</span>`;
                 }
             }
-        } catch (e) { console.error("API Link Failed"); }
+        } catch (e) {
+            console.error("Cloud Sync Error");
+        }
     }
+
+    // Initial load and set 15s interval
     fetchAgriData();
     setInterval(fetchAgriData, 15000);
 </script>
