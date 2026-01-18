@@ -3,49 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyGuardian Agri-Intelligence</title>
+    <title>SkyGuardian | TechNOVA Sdn. Bhd.</title>
     <style>
-        :root { --agri-green: #27ae60; --bg: #f0f4f1; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
-        .container { max-width: 1100px; margin: auto; }
+        :root { --agri-green: #27ae60; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; }
         
-        .header { background: white; padding: 20px; border-radius: 15px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        h1 { color: var(--agri-green); margin: 0; }
+        .header { background: white; padding: 30px; border-radius: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h1 { color: var(--agri-green); margin: 0; font-size: 2.2em; }
         
-        .status-container { display: flex; align-items: center; justify-content: center; margin-top: 10px; font-weight: bold; }
-        .status-dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; background: #95a5a6; transition: 0.3s; }
-        
-        /* CENTERED GAUGE GRID */
-        /* Update your CSS with this exact block */
-        /* Update these specific classes in your <style> tag */
+        .status-container { display: flex; align-items: center; justify-content: center; margin-top: 12px; font-weight: 600; }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; background: #bdc3c7; }
+
+        /* FIXED: Force 3 Gauges in one horizontal line */
         .grid { 
             display: flex; 
-            flex-flow: row nowrap;    /* Prevents the third gauge from dropping down */
-            justify-content: center;  /* Centers the entire group */
-            align-items: stretch;     /* Makes all cards the same height */
-            gap: 10px;                /* Tightens the space to fit all three */
-            width: 100%;
-            margin: 20px auto;
+            flex-direction: row; 
+            flex-wrap: nowrap; 
+            justify-content: center; 
+            gap: 20px; 
+            margin: 30px 0;
         }
-        
         .card { 
             background: white; 
-            padding: 10px;            /* Reduced padding to save space */
+            padding: 20px; 
             border-radius: 15px; 
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-            flex: 1 1 300px;          /* Allows cards to grow and shrink equally */
-            max-width: 33%;           /* Ensures they take up exactly 1/3 of the row */
+            text-align: center; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            flex: 1;
+            min-width: 0; 
         }
-        
-        /* Mobile Responsive: Stack them only when the screen is very small */
-        @media (max-width: 900px) {
+
+        .analysis-box { background: white; border-left: 10px solid var(--agri-green); padding: 25px; border-radius: 15px; margin-bottom: 30px; }
+        iframe { border: none; width: 100%; height: 260px; border-radius: 12px; }
+
+        .footer { 
+            text-align: center; 
+            margin-top: 50px; 
+            padding: 30px; 
+            color: #95a5a6; 
+            font-size: 0.95em; 
+            border-top: 1px solid #dcdde1; 
+        }
+
+        /* Responsive: Stack only on mobile screens */
+        @media (max-width: 850px) {
             .grid { flex-wrap: wrap; }
-            .card { max-width: 100%; flex: 1 1 100%; }
+            .card { flex: 1 1 100%; }
         }
-        
-        .analysis-box { background: white; border-left: 10px solid var(--agri-green); padding: 20px; border-radius: 10px; margin-bottom: 30px; }
-        iframe { border: none; width: 100%; height: 260px; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -55,13 +60,13 @@
         <h1>SkyGuardian | Agricultural Node</h1>
         <div class="status-container">
             <div id="status-dot" class="status-dot"></div>
-            <span id="status-text">Connecting to Field Node...</span>
+            <span id="status-text">Fetching live data...</span>
         </div>
     </div>
 
     <div class="analysis-box">
-        <h3>🚜 Agricultural Insight</h3>
-        <p id="insight-text" style="font-size: 1.1em;">Monitoring live conditions...</p>
+        <h3>🚜 TechNOVA Field Intelligence</h3>
+        <p id="insight-text" style="font-size: 1.15em;">Analyzing environment...</p>
     </div>
 
     <div class="grid">
@@ -71,51 +76,48 @@
     </div>
 
     <div class="card" style="width: 100%; box-sizing: border-box;">
-        <h3>24-Hour Environmental Trends</h3>
+        <h3>24-Hour Environmental History</h3>
         <iframe src="https://thingspeak.com/channels/3231323/charts/1?dynamic=true&results=60&color=27ae60"></iframe>
     </div>
+
+    <footer class="footer">
+        &copy; TechNOVA Sdn. Bhd. 2026 | Developed for High-Precision Agriculture
+    </footer>
 </div>
 
 <script>
     async function fetchAgriData() {
-        const chanID = '3231323';
-        const apiKey = 'PXZJ8EKXDGBQM64P'; 
-        const url = `https://api.thingspeak.com/channels/${chanID}/feeds/last.json?api_key=${apiKey}`;
+        const url = `https://api.thingspeak.com/channels/3231323/feeds/last.json?api_key=PXZJ8EKXDGBQM64P`;
 
         try {
-            const response = await fetch(url);
-            const data = await response.json();
+            const res = await fetch(url);
+            const data = await res.json();
             
-            if(!data.created_at) return;
+            if (data && data.created_at) {
+                const lastSeen = new Date(data.created_at);
+                const now = new Date();
+                const secondsAgo = Math.floor((now - lastSeen) / 1000);
+                
+                const dot = document.getElementById('status-dot');
+                const label = document.getElementById('status-text');
 
-            const lastSync = new Date(data.created_at);
-            const now = new Date();
-            const diffSec = Math.floor((now - lastSync) / 1000);
-            
-            const dot = document.getElementById('status-dot');
-            const statusLabel = document.getElementById('status-text');
+                // FIXED: Removed NaNm error with valid number check
+                if (!isNaN(secondsAgo) && secondsAgo < 120) {
+                    dot.style.background = "#2ecc71";
+                    label.innerText = "Field Node: Online (Active Now)";
+                } else {
+                    dot.style.background = "#e74c3c";
+                    const mins = Math.floor(secondsAgo / 60) || 0;
+                    label.innerText = `Field Node: Offline (${mins}m ago)`;
+                }
 
-            // FIX FOR NaNm: Ensure diffSec is a number
-            if (!isNaN(diffSec) && diffSec < 60) {
-                dot.style.background = "#2ecc71";
-                statusLabel.innerText = "Field Node: Online (Live)";
-            } else {
-                dot.style.background = "#e74c3c";
-                const mins = Math.max(0, Math.floor(diffSec / 60));
-                statusLabel.innerText = `Field Node: Offline (${mins}m ago)`;
+                const T = parseFloat(data.field1);
+                document.getElementById('insight-text').innerText = T > 20 ? "✅ OPTIMAL: Current temperature supports efficient photosynthesis." : "⚠️ NOTICE: Monitoring cool spell.";
             }
-
-            // INSIGHT LOGIC
-            const T = parseFloat(data.field1);
-            let msg = T > 20 ? "✅ OPTIMAL: Temperatures are ideal for crop development." : "⚠️ COOL: Growth may slow down.";
-            document.getElementById('insight-text').innerText = msg;
-
-        } catch (e) { console.error("API Link Broken"); }
+        } catch (e) { console.error("Sync Error"); }
     }
     fetchAgriData();
-    setInterval(fetchAgriData, 15000); // 15-second refresh for real-time feel
+    setInterval(fetchAgriData, 15000);
 </script>
 </body>
 </html>
-
-
