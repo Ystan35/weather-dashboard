@@ -3,99 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyGuardian | Weather Intelligence</title>
+    <title>SkyGuardian Agri-Intelligence</title>
     <style>
-        :root { --primary: #2c3e50; --accent: #3498db; --bg: #f4f7f6; --online: #2ecc71; --offline: #e74c3c; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; color: var(--primary); }
-        .container { max-width: 1000px; margin: auto; }
-        .header { text-align: center; margin-bottom: 30px; }
+        :root { --agri-green: #27ae60; --warning: #e67e22; --danger: #e74c3c; --bg: #f0f4f1; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        .container { max-width: 1100px; margin: auto; }
         
-        /* Status Bar */
-        .status-bar { display: flex; align-items: center; justify-content: center; background: white; padding: 10px; border-radius: 50px; width: fit-content; margin: 0 auto 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 10px; background: #95a5a6; }
+        .header { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; margin-bottom: 20px; }
+        h1 { color: var(--agri-green); margin: 0; }
+        
+        /* Online Status Bar */
+        .status-container { display: flex; align-items: center; justify-content: center; margin-top: 10px; font-weight: bold; }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; background: #95a5a6; transition: 0.3s; }
         
         /* Analysis Box */
-        .analysis-card { background: #d1ecf1; border-left: 5px solid #0c5460; padding: 15px; border-radius: 8px; margin-bottom: 25px; text-align: left; }
+        .analysis-box { background: white; border-left: 10px solid var(--agri-green); padding: 20px; border-radius: 10px; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .analysis-box h3 { margin-top: 0; color: var(--agri-green); }
+
+        /* Data Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        iframe { border: none; width: 100%; height: 260px; border-radius: 10px; }
         
-        /* Data Display */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .card { background: white; padding: 15px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; }
-        iframe { border: none; width: 100%; height: 250px; border-radius: 8px; }
-        
-        .refresh-btn { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px; font-weight: bold; }
-        .refresh-btn:hover { background: #2980b9; }
+        .refresh-btn { background: var(--agri-green); color: white; border: none; padding: 12px 25px; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; }
+        .refresh-btn:hover { background: #1e8449; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header">
-        <h1>SkyGuardian Intelligence</h1>
-        <div class="status-bar">
-            <div id="status-dot" class="dot"></div>
-            <span id="status-text">Checking System...</span>
+        <h1>SkyGuardian | Agricultural Node</h1>
+        <div class="status-container">
+            <div id="status-dot" class="status-dot"></div>
+            <span id="status-text">Synchronizing with Field Node...</span>
         </div>
-        <button class="refresh-btn" onclick="location.reload()">Manual Refresh</button>
+        <button class="refresh-btn" onclick="location.reload()">Refresh Live Data</button>
     </div>
 
-    <div class="analysis-card">
-        <strong>💡 Intelligence Insight:</strong>
-        <span id="insight-text">Gathering data for analysis...</span>
+    <div class="analysis-box">
+        <h3>🚜 Agricultural Insight</h3>
+        <p id="insight-text" style="font-size: 1.1em; line-height: 1.5;">Analyzing field conditions...</p>
     </div>
 
     <div class="grid">
-        <div class="card"><h3>Live Temperature</h3><iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/1"></iframe></div>
-        <div class="card"><h3>Live Humidity</h3><iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/2"></iframe></div>
-        <div class="card"><h3>Live Pressure</h3><iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/3"></iframe></div>
+        <div class="card"><h3>Ambient Temperature</h3><iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/1"></iframe></div>
+        <div class="card"><h3>Canopy Humidity</h3><iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/2"></iframe></div>
+        <div class="card"><h3>Atmospheric Pressure</h3><iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/widgets/3"></iframe></div>
     </div>
 
-    <div class="card" style="margin-top:20px;">
-        <h3>24-Hour Historical Trend</h3>
-        <iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/charts/1?dynamic=true&results=60&title=Temperature+Trend&type=line"></iframe>
+    <div class="card" style="margin-top: 30px;">
+        <h3>24-Hour Environmental Trends</h3>
+        <iframe src="https://thingspeak.com/channels/YOUR_CHANNEL_ID/charts/1?dynamic=true&results=60&title=Temperature+History&type=line&color=27ae60"></iframe>
     </div>
 </div>
 
 <script>
-    async function updateDashboard() {
-        const chanID = '3231323';
-        const apiKey = 'PXZJ8EKXDGBQM64P';
-        const url = `https://api.thingspeak.com/channels/${chanID}/feeds/last.json?api_key=${apiKey}`;
+    async function fetchAgriData() {
+        const chanID = 'YOUR_CHANNEL_ID';
+        const readKey = 'YOUR_READ_API_KEY';
+        const url = `https://api.thingspeak.com/channels/${chanID}/feeds/last.json?api_key=${readKey}`;
 
         try {
-            const res = await fetch(url);
-            const data = await res.json();
+            const response = await fetch(url);
+            const data = await response.json();
             
-            // 1. ONLINE STATUS LOGIC
-            const lastUpdate = new Date(data.created_at);
-            const diff = (new Date() - lastUpdate) / 1000 / 60; // Minutes
+            // 1. HEARTBEAT / ONLINE STATUS
+            const lastSync = new Date(data.created_at);
+            const now = new Date();
+            const diffMinutes = Math.floor((now - lastSync) / 1000 / 60);
+            
             const dot = document.getElementById('status-dot');
-            const text = document.getElementById('status-text');
+            const statusLabel = document.getElementById('status-text');
 
-            if (diff < 2.5) {
+            if (diffMinutes < 5) {
                 dot.style.background = "#2ecc71";
-                text.innerText = "System Online";
+                statusLabel.innerText = "Field Node: Online";
             } else {
                 dot.style.background = "#e74c3c";
-                text.innerText = "Offline (Last sync: " + Math.round(diff) + "m ago)";
+                statusLabel.innerText = `Field Node: Offline (Last active ${diffMinutes}m ago)`;
             }
 
-            // 2. DATA ANALYSIS LOGIC
-            const temp = parseFloat(data.field1);
-            const press = parseFloat(data.field3);
-            let insight = "";
+            // 2. AGRI-SPECIFIC ANALYSIS
+            const T = parseFloat(data.field1); // Temp
+            const H = parseFloat(data.field2); // Humidity
+            const P = parseFloat(data.field3); // Pressure
+            let msg = "";
 
-            if (press < 1010) insight = "Atmospheric pressure is low. High probability of rain/storm soon.";
-            else if (temp > 32) insight = "Excessive heat detected. Recommend activating cooling systems.";
-            else insight = "Weather patterns are stable. No immediate action required.";
-            
-            document.getElementById('insight-text').innerText = insight;
+            if (T > 35) msg = "⚠️ CRITICAL HEAT: High risk of plant wilting. Immediate irrigation suggested.";
+            else if (T < 4) msg = "❄️ FROST ALERT: Risk of cellular damage. Activate thermal protection.";
+            else if (H > 85 && T > 22) msg = "🍄 FUNGAL RISK: High humidity and warmth detected. Monitor for blight.";
+            else if (P < 1005) msg = "⛈️ STORM WARNING: Rapid pressure drop. Secure lightweight farm structures.";
+            else msg = "✅ OPTIMAL GROWTH: Conditions are ideal for photosynthesis and crop development.";
 
-        } catch (e) { document.getElementById('status-text').innerText = "Connection Error"; }
+            document.getElementById('insight-text').innerText = msg;
+
+        } catch (error) {
+            document.getElementById('status-text').innerText = "Database Connection Error";
+        }
     }
 
-    updateDashboard();
-    setInterval(updateDashboard, 30000); // Auto-update every 30s
+    fetchAgriData();
+    setInterval(fetchAgriData, 30000); // Check for updates every 30 seconds
 </script>
+
 </body>
 </html>
-
