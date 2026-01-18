@@ -17,26 +17,31 @@
         
         /* CENTERED GAUGE GRID */
         /* Update your CSS with this exact block */
+        /* Update these specific classes in your <style> tag */
         .grid { 
             display: flex; 
-            flex-direction: row;      /* Force side-by-side */
-            flex-wrap: wrap;         /* Allow wrap only on small phones */
-            justify-content: center; /* Centers the whole group */
-            align-items: flex-start; /* Keeps tops aligned */
-            gap: 15px;               /* Reduced gap to help fit */
+            flex-flow: row nowrap;    /* Prevents the third gauge from dropping down */
+            justify-content: center;  /* Centers the entire group */
+            align-items: stretch;     /* Makes all cards the same height */
+            gap: 10px;                /* Tightens the space to fit all three */
             width: 100%;
-            margin: 0 auto;
+            margin: 20px auto;
         }
         
         .card { 
             background: white; 
-            padding: 15px; 
+            padding: 10px;            /* Reduced padding to save space */
             border-radius: 15px; 
             text-align: center;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-            /* Adjust width to ensure 3 fit: (1100px container / 3) - gaps */
-            flex: 0 1 320px; 
-            min-width: 300px;        /* Prevents cards from getting too skinny */
+            flex: 1 1 300px;          /* Allows cards to grow and shrink equally */
+            max-width: 33%;           /* Ensures they take up exactly 1/3 of the row */
+        }
+        
+        /* Mobile Responsive: Stack them only when the screen is very small */
+        @media (max-width: 900px) {
+            .grid { flex-wrap: wrap; }
+            .card { max-width: 100%; flex: 1 1 100%; }
         }
         
         .analysis-box { background: white; border-left: 10px solid var(--agri-green); padding: 20px; border-radius: 10px; margin-bottom: 30px; }
@@ -112,4 +117,5 @@
 </script>
 </body>
 </html>
+
 
