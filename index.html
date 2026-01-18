@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SkyGuardian | TechNova</title>
+    <title>SkyGuardian Pro | TechNOVA</title>
     <style>
-        :root { --agri-green: #27ae60; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 15px; }
+        :root { --agri-green: #27ae60; --error-red: #e74c3c; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 10px; }
         .container { max-width: 1400px; margin: auto; }
         
         /* Header & Mobile-Friendly Refresh */
@@ -18,93 +18,87 @@
         }
         h1 { color: var(--agri-green); margin: 0; font-size: 1.8em; }
         
+        /* Offline Alert Popup Style */
+        #offline-alert {
+            display: none;
+            background: var(--error-red);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+
         .refresh-btn {
             position: absolute; right: 20px; top: 25px;
             background: var(--agri-green); color: white; border: none;
             padding: 8px 16px; border-radius: 8px; cursor: pointer;
-            font-weight: bold; transition: 0.3s;
+            font-weight: bold;
         }
 
-        .status-container { display: flex; align-items: center; justify-content: center; margin-top: 10px; font-weight: 600; font-size: 0.9em; }
-        .status-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; background: #bdc3c7; }
-
-        .section-title { text-align: center; margin: 30px 0 15px; font-size: 1em; color: #7f8c8d; text-transform: uppercase; letter-spacing: 1.5px; }
-
-        /* Grid System: Row on Desktop, Column on Mobile */
+        /* Responsive Grid: Row on Desktop, Column on Mobile */
         .grid { 
             display: flex; 
-            flex-direction: row; 
-            flex-wrap: nowrap; 
+            flex-flow: row wrap; /* Key for mobile view */
             justify-content: center; 
             gap: 15px; 
             margin-bottom: 20px;
         }
 
-        /* Card Centering Logic */
+        /* Card Geometry */
         .card { 
             background: white; padding: 15px; border-radius: 15px; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-            flex: 1; display: flex; flex-direction: column; 
-            align-items: center; justify-content: center; min-width: 0; 
+            flex: 1 1 300px; /* Force wrap on mobile */
+            display: flex; flex-direction: column; 
+            align-items: center; justify-content: center;
+            max-width: 450px;
         }
-        .card h3 { font-size: 1em; margin-bottom: 10px; color: #34495e; }
 
         iframe { border: none; width: 100%; height: 260px; border-radius: 10px; }
-        .history-card iframe { height: 300px; }
+        .history-card { flex: 1 1 400px; }
 
-        .footer { text-align: center; margin-top: 40px; padding: 20px; color: #95a5a6; font-size: 0.85em; border-top: 1px solid #dcdde1; }
-
-        /* --- MOBILE VIEW RESPONSIVENESS --- */
-        @media (max-width: 900px) {
-            h1 { font-size: 1.4em; padding-right: 80px; text-align: left; }
-            .refresh-btn { top: 20px; right: 15px; padding: 6px 12px; font-size: 0.8em; }
-            
-            .grid { 
-                flex-direction: column; /* Stack vertically */
-                flex-wrap: wrap; 
-            }
-            .card { width: 100%; box-sizing: border-box; }
-            .history-card iframe { height: 250px; } /* Slightly shorter for mobile scroll */
+        /* Mobile Specifics */
+        @media (max-width: 768px) {
+            h1 { font-size: 1.3em; text-align: left; padding-right: 60px; }
+            .refresh-btn { top: 15px; right: 10px; padding: 5px 10px; font-size: 0.7em; }
+            .card { flex: 1 1 100%; max-width: 100%; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <div id="offline-alert">⚠️ ALERT: SkyGuardian Node is OFFLINE. Check Field Power.</div>
+
     <div class="header">
         <h1>SkyGuardian Hub</h1>
         <button class="refresh-btn" onclick="location.reload()">🔄 Refresh</button>
-        <div class="status-container">
-            <div id="status-dot" class="status-dot"></div>
-            <span id="status-text">Connecting...</span>
-        </div>
+        <div id="status-text" style="font-weight: bold; margin-top:10px; color: #7f8c8d;">Connecting...</div>
     </div>
 
-    <div class="section-title">Live Node Gauges</div>
     <div class="grid">
         <div class="card"><h3>Temperature</h3><iframe src="https://thingspeak.com/channels/3231323/widgets/1206428"></iframe></div>
         <div class="card"><h3>Humidity</h3><iframe src="https://thingspeak.com/channels/3231323/widgets/1206435"></iframe></div>
         <div class="card"><h3>Pressure</h3><iframe src="https://thingspeak.com/channels/3231323/widgets/1206436"></iframe></div>
     </div>
 
-    <div class="section-title">24h History</div>
     <div class="grid">
-        <div class="card history-card">
-            <h3>Temp Trend</h3>
-            <iframe src="https://thingspeak.com/channels/3231323/charts/1?dynamic=true&results=15&color=e67e22"></iframe>
-        </div>
-        <div class="card history-card">
-            <h3>Humidity Trend</h3>
-            <iframe src="https://thingspeak.com/channels/3231323/charts/2?dynamic=true&results=15&color=3498db"></iframe>
-        </div>
-        <div class="card history-card">
-            <h3>Pressure Trend</h3>
-            <iframe src="https://thingspeak.com/channels/3231323/charts/3?dynamic=true&results=15&color=9b59b6"></iframe>
-        </div>
+        <div class="card history-card"><h3>24h Temp</h3><iframe src="https://thingspeak.com/channels/3231323/charts/1?dynamic=true&results=15&color=e67e22"></iframe></div>
+        <div class="card history-card"><h3>24h Humidity</h3><iframe src="https://thingspeak.com/channels/3231323/charts/2?dynamic=true&results=15&color=3498db"></iframe></div>
     </div>
 
-    <footer class="footer">
-        &copy; TechNOVA Sdn. Bhd. 2026 | Mobile Agri-Intelligence
+    <footer style="text-align: center; padding: 30px; color: #95a5a6;">
+        &copy; TechNOVA Sdn. Bhd. 2026
     </footer>
 </div>
 
@@ -115,17 +109,18 @@
             const data = await res.json();
             if (data && data.created_at) {
                 const diff = Math.floor((new Date() - new Date(data.created_at)) / 1000);
-                const dot = document.getElementById('status-dot');
-                const label = document.getElementById('status-text');
-                if (diff < 120) {
-                    dot.style.background = "#2ecc71";
-                    label.innerText = "Node: Online";
+                const alertBox = document.getElementById('offline-alert');
+                const statusLabel = document.getElementById('status-text');
+
+                if (!isNaN(diff) && diff < 150) { // If updated within 2.5 mins
+                    alertBox.style.display = "none";
+                    statusLabel.innerHTML = "Status: <span style='color:#27ae60'>ONLINE (LIVE)</span>";
                 } else {
-                    dot.style.background = "#e74c3c";
-                    label.innerText = `Node: Offline (${Math.floor(diff/60) || 0}m)`;
+                    alertBox.style.display = "block";
+                    statusLabel.innerHTML = "Status: <span style='color:#e74c3c'>OFFLINE</span>";
                 }
             }
-        } catch (e) { console.error("API Connection Error"); }
+        } catch (e) { console.error("API Link Failed"); }
     }
     fetchAgriData();
     setInterval(fetchAgriData, 15000);
