@@ -5,79 +5,136 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SkyGuardian Mobile | TechNOVA</title>
     <style>
-        :root { --agri-green: #27ae60; --bg: #f8f9fa; }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); margin: 0; padding: 10px; overflow-x: hidden; }
+        :root { --agri-green: #27ae60; --bg: #f4f7f6; }
         
-        .mobile-header { background: white; padding: 15px; border-radius: 15px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .mobile-header h1 { color: var(--agri-green); margin: 0; font-size: 1.4em; }
-        
-        .status-bar { display: flex; align-items: center; justify-content: center; font-size: 0.8em; margin-top: 5px; color: #7f8c8d; }
-        .dot { width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: #bdc3c7; }
+        /* Reset for full-height centering */
+        * { box-sizing: border-box; }
+        body { 
+            margin: 0; 
+            padding: 10px; 
+            background: var(--bg); 
+            font-family: -apple-system, sans-serif; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        /* EXCLUSIVE MOBILE CARD STRUCTURE */
-        .m-card { 
+        .mobile-header { 
+            width: 100%; 
             background: white; 
-            margin-bottom: 15px; 
-            border-radius: 20px; 
             padding: 20px; 
+            border-radius: 20px; 
+            text-align: center; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        /* THE ALIGNMENT FIX: Exclusive Mobile Segment */
+        .m-segment {
+            width: 100%;
+            background: white;
+            border-radius: 25px;
+            margin-bottom: 20px;
+            padding: 40px 10px; /* High vertical padding for centering */
             display: flex;
             flex-direction: column;
             align-items: center;    /* Horizontal Center */
             justify-content: center;/* Vertical Center */
-            min-height: 380px;      /* Fixed height for perfect scrolling snap */
-            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            min-height: 450px;      /* Forces a large enough area to show centering */
+            box-shadow: 0 2px 12px rgba(0,0,0,0.03);
         }
 
-        .m-card h3 { font-size: 1.1em; color: #2c3e50; margin-bottom: 15px; border-bottom: 2px solid var(--agri-green); padding-bottom: 5px; }
-        
-        iframe { border: none; width: 100%; height: 260px; pointer-events: none; } /* Disable iframe scroll for easier page scroll */
-        .history-frame { height: 300px; }
+        h3 { 
+            color: #34495e; 
+            font-size: 1.2em; 
+            margin: 0 0 25px 0; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-        .m-footer { text-align: center; padding: 20px; font-size: 0.75em; color: #bdc3c7; }
+        /* Iframe Centering */
+        .iframe-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        iframe { 
+            border: none; 
+            width: 100%; 
+            height: 280px; /* Optimized height for mobile gauges */
+            max-width: 320px; 
+            border-radius: 15px;
+        }
+
+        .history-iframe { height: 320px; max-width: 100%; }
+
+        .status-pill {
+            background: #f1f2f6;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; background: #bdc3c7; }
+
+        .footer { 
+            text-align: center; 
+            padding: 30px; 
+            color: #95a5a6; 
+            font-size: 0.8em; 
+            line-height: 1.5;
+        }
     </style>
 </head>
 <body>
 
     <div class="mobile-header">
-        <h1>SkyGuardian Mobile</h1>
-        <div class="status-bar">
+        <h1 style="color:var(--agri-green); margin:0; font-size:1.5em;">SkyGuardian PRO</h1>
+        <div class="status-pill">
             <div id="status-dot" class="dot"></div>
-            <span id="status-text">Syncing TechNOVA Node...</span>
+            <span id="status-text" style="color:#7f8c8d;">SYNCING...</span>
         </div>
     </div>
 
-    <div class="m-card">
-        <h3>Temperature</h3>
-        <iframe src="https://thingspeak.com/channels/3231323/widgets/1206428"></iframe>
+    <div class="m-segment">
+        <h3>Ambient Temperature</h3>
+        <div class="iframe-wrapper">
+            <iframe src="https://thingspeak.com/channels/3231323/widgets/1206428"></iframe>
+        </div>
     </div>
 
-    <div class="m-card">
-        <h3>Humidity</h3>
-        <iframe src="https://thingspeak.com/channels/3231323/widgets/1206435"></iframe>
+    <div class="m-segment">
+        <h3>Canopy Humidity</h3>
+        <div class="iframe-wrapper">
+            <iframe src="https://thingspeak.com/channels/3231323/widgets/1206435"></iframe>
+        </div>
     </div>
 
-    <div class="m-card">
-        <h3>Air Pressure</h3>
-        <iframe src="https://thingspeak.com/channels/3231323/widgets/1206436"></iframe>
+    <div class="m-segment">
+        <h3>Atmospheric Pressure</h3>
+        <div class="iframe-wrapper">
+            <iframe src="https://thingspeak.com/channels/3231323/widgets/1206436"></iframe>
+        </div>
     </div>
 
-    <div style="text-align:center; font-weight:bold; color:#7f8c8d; padding: 10px;">HISTORICAL TRENDS</div>
+    <div style="margin: 20px 0; color: #7f8c8d; font-weight: bold;">HISTORY ANALYTICS</div>
 
-    <div class="m-card">
-        <iframe class="history-frame" src="https://thingspeak.com/channels/3231323/charts/1?dynamic=true&results=20&color=e67e22"></iframe>
+    <div class="m-segment">
+        <iframe class="history-iframe" src="https://thingspeak.com/channels/3231323/charts/1?dynamic=true&results=20&color=e67e22"></iframe>
     </div>
 
-    <div class="m-card">
-        <iframe class="history-frame" src="https://thingspeak.com/channels/3231323/charts/2?dynamic=true&results=20&color=3498db"></iframe>
-    </div>
-
-    <footer class="m-footer">
-        &copy; TechNOVA Sdn. Bhd. 2026<br>
-        Optimized for Mobile Viewing
+    <footer class="footer">
+        <strong>TechNOVA Sdn. Bhd. 2026</strong><br>
+        Precision Mobile Agriculture Interface
     </footer>
 
 <script>
-    async function updateStatus() {
+    async function updateMobileStatus() {
         const url = `https://api.thingspeak.com/channels/3231323/feeds/last.json?api_key=PXZJ8EKXDGBQM64P`;
         try {
             const res = await fetch(url);
@@ -87,15 +144,15 @@
             const label = document.getElementById('status-text');
             if (diff < 120) {
                 dot.style.background = "#2ecc71";
-                label.innerText = "Node: Live";
+                label.innerText = "ONLINE: LIVE";
             } else {
                 dot.style.background = "#e74c3c";
-                label.innerText = `Node: Offline (${Math.floor(diff/60)}m)`;
+                label.innerText = "OFFLINE";
             }
         } catch (e) {}
     }
-    updateStatus();
-    setInterval(updateStatus, 15000);
+    updateMobileStatus();
+    setInterval(updateMobileStatus, 15000);
 </script>
 </body>
 </html>
