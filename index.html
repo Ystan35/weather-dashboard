@@ -4,53 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SkyGuardian | TechNOVA Sdn. Bhd.</title>
-    <!-- Tailwind CSS for utility spacing and colors -->
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         :root { --agri-green: #27ae60; --bg: #f0f3f2; --card: #ffffff; }
         body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 15px; }
         .container { max-width: 1400px; margin: auto; }
         
-        /* Corporate Header matched to image: Centered, Large Rounded, White */
-        .header { 
-            background: var(--card); 
-            padding: 40px 20px; 
-            border-radius: 40px; /* Highly rounded as per image */
-            text-align: center; 
-            margin-bottom: 30px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        h1 { 
-            color: var(--agri-green); 
-            margin: 0; 
-            font-size: 2.2em; 
-            font-weight: 700; 
-            letter-spacing: -0.5px;
-        }
-
-        .status-container { 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            margin-top: 15px; 
-            font-weight: 600; 
-            font-size: 0.95em; 
-            color: #333;
-        }
-        
-        .status-dot { 
-            width: 12px; 
-            height: 12px; 
-            border-radius: 50%; 
-            margin-right: 10px; 
-            background: #e74c3c; /* Default red for offline */
-            transition: background 0.5s ease; 
-        }
+        /* Corporate Header */
+        .header { background: var(--card); padding: 25px; border-radius: 20px; text-align: center; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h1 { color: var(--agri-green); margin: 0; font-size: 1.8em; }
+        .status-container { display: flex; align-items: center; justify-content: center; margin-top: 10px; font-weight: 600; font-size: 0.9em; }
+        .status-dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; background: #95a5a6; }
 
         .section-header { text-align: center; color: #7f8c8d; text-transform: uppercase; letter-spacing: 2px; margin: 30px 0 15px; font-size: 1em; font-weight: bold; }
 
@@ -71,28 +34,15 @@
             border-radius: 18px; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.03);
             flex: 1;
-            display: flex;          
+            display: flex;         
             flex-direction: column; 
-            align-items: center;    
-            justify-content: center;
+            align-items: center;    /* Horizontal Center */
+            justify-content: center;/* Vertical Center */
             min-height: 380px;      
             min-width: 0; 
         }
 
-        /* Suggestion Card */
-        .suggestion-card {
-            background: #ffffff;
-            border-top: 5px solid var(--agri-green);
-            flex: none;
-            width: 100%;
-            min-height: auto;
-            padding: 25px;
-            margin-bottom: 20px;
-            border-radius: 18px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-        }
-
-        .card h3 { margin-top: 0; margin-bottom: 20px; color: #2c3e50; font-size: 1.2em; text-align: center; font-weight: 700; }
+        .card h3 { margin-top: 0; margin-bottom: 20px; color: #2c3e50; font-size: 1.2em; text-align: center; }
         
         iframe { border: none; width: 100%; border-radius: 12px; display: block; }
         .gauge-iframe { height: 260px; max-width: 400px; margin: 0 auto; }
@@ -102,47 +52,31 @@
 
         /* MOBILE OPTIMIZATION */
         @media (max-width: 850px) {
-            .grid { flex-direction: column; } 
-            .card { flex: none; width: 100%; min-height: 420px; margin-bottom: 15px; }
-            h1 { font-size: 1.8em; }
-            .header { border-radius: 25px; padding: 30px 15px; }
+            .grid { flex-direction: column; } /* Stack cards vertically */
+            .card { 
+                flex: none; 
+                width: 100%; 
+                box-sizing: border-box; 
+                min-height: 420px; /* Give more height for centering on mobile */
+                margin-bottom: 15px;
+            }
+            h1 { font-size: 1.5em; }
+            .gauge-iframe { height: 280px; } /* Slightly larger gauge for mobile visibility */
         }
-
-        .setup-panel { background: #fff3cd; border: 1px solid #ffeeba; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; }
     </style>
 </head>
 <body>
-
+<script>
+    if (window.innerWidth <= 800) {
+        window.location.href = "/mobile.html";
+    }
+</script>
 <div class="container">
     <div class="header">
         <h1>SkyGuardian | Agri-Node</h1>
         <div class="status-container">
             <div id="status-dot" class="status-dot"></div>
             <span id="status-text">Connecting Field Hardware....</span>
-        </div>
-    </div>
-
-    <!-- Telegram Setup -->
-    <div id="setup-panel" class="setup-panel hidden">
-        <p class="text-sm font-bold text-amber-800 mb-2">Telegram Setup Required</p>
-        <div class="flex flex-wrap justify-center gap-2">
-            <input id="tg-token" type="password" placeholder="Bot Token" class="p-2 border rounded text-sm">
-            <input id="tg-chatid" type="text" placeholder="Chat ID" class="p-2 border rounded text-sm">
-            <button onclick="saveSettings()" class="bg-amber-600 text-white px-4 py-2 rounded text-sm font-bold">Enable Alerts</button>
-        </div>
-    </div>
-
-    <div class="section-header">Node Intelligence Analysis</div>
-    <div class="suggestion-card">
-        <div class="flex items-center gap-3 mb-4">
-            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-            <h3 class="m-0 text-slate-800 font-bold">Live SkyGuardian Insights</h3>
-        </div>
-        <div id="suggestion-content" class="p-4 bg-slate-50 rounded-xl border-l-4 border-green-500">
-            <p class="text-slate-500 italic">Processing field data through TechNOVA algorithms...</p>
-        </div>
-        <div id="notification-status" class="mt-4 text-[10px] uppercase font-bold text-slate-400 text-right">
-            Network Status: Secured | Syncing...
         </div>
     </div>
 
@@ -166,89 +100,29 @@
 </div>
 
 <script>
-    const CHANNEL_ID = '3231323';
-    let TG_TOKEN = localStorage.getItem('tg_token') || '';
-    let TG_CHAT_ID = localStorage.getItem('tg_chatid') || '';
-    let lastAlertTime = 0;
-
-    if(!TG_TOKEN || !TG_CHAT_ID) document.getElementById('setup-panel').classList.remove('hidden');
-
-    function saveSettings() {
-        localStorage.setItem('tg_token', document.getElementById('tg-token').value);
-        localStorage.setItem('tg_chatid', document.getElementById('tg-chatid').value);
-        location.reload();
-    }
-
     async function fetchAgriData() {
-        const url = `https://api.thingspeak.com/channels/${CHANNEL_ID}/feeds/last.json?api_key=PXZJ8EKXDGBQM64P`;
+        const url = `https://api.thingspeak.com/channels/3231323/feeds/last.json?api_key=PXZJ8EKXDGBQM64P`;
         try {
             const res = await fetch(url);
             const data = await res.json();
             if (data && data.created_at) {
-                updateStatusIndicator(data.created_at);
-                analyzeRealTimeData(parseFloat(data.field1), parseFloat(data.field2), parseFloat(data.field3));
+                const diff = Math.floor((new Date() - new Date(data.created_at)) / 1000);
+                const dot = document.getElementById('status-dot');
+                const label = document.getElementById('status-text');
+
+                if (!isNaN(diff) && diff < 120) {
+                    dot.style.background = "#2ecc71";
+                    label.innerText = "TechNOVA Node: Online (Live)";
+                } else {
+                    dot.style.background = "#e74c3c";
+                    label.innerText = `Node: Offline (${Math.floor(diff/60) || 0}m ago)`;
+                }
             }
         } catch (e) { console.error("Sync Error"); }
     }
-
-    function updateStatusIndicator(createdAt) {
-        const diff = Math.floor((new Date() - new Date(createdAt)) / 1000);
-        const dot = document.getElementById('status-dot');
-        const label = document.getElementById('status-text');
-
-        if (!isNaN(diff) && diff < 120) {
-            dot.style.background = "#2ecc71";
-            label.innerText = "Node: Online (Live)";
-        } else {
-            dot.style.background = "#e74c3c";
-            label.innerText = `Node: Offline (${Math.floor(diff/60) || 0}m ago)`;
-        }
-    }
-
-    function analyzeRealTimeData(temp, humid, press) {
-        let suggestion = "";
-        let alertNeeded = false;
-        let title = "Optimal Growth State";
-        let statusColor = "text-green-700";
-
-        if (temp > 30) {
-            suggestion = "Caution: Heat stress risk for crops. Ensure irrigation systems are active.";
-            alertNeeded = true;
-            title = "High Temperature Warning";
-            statusColor = "text-red-700";
-        } else if (humid > 85) {
-            suggestion = "Warning: Excess humidity detected. Monitor for fungal growth.";
-            alertNeeded = true;
-            title = "High Humidity Alert";
-            statusColor = "text-blue-700";
-        } else {
-            suggestion = "Parameters currently within the optimal 'Golden Zone' for productivity.";
-        }
-
-        document.getElementById('suggestion-content').innerHTML = `
-            <p class="font-bold text-lg mb-1 ${statusColor}">${title}</p>
-            <p class="text-slate-700 leading-relaxed">${suggestion}</p>
-        `;
-
-        const now = Date.now();
-        if (alertNeeded && (now - lastAlertTime > 600000)) {
-            sendTelegramAlert(title, suggestion, temp, humid);
-            lastAlertTime = now;
-        }
-    }
-
-    async function sendTelegramAlert(title, msg, t, h) {
-        if (!TG_TOKEN || !TG_CHAT_ID) return;
-        const text = `🚨 ALERT\nStatus: ${title}\nTemp: ${t}°C\nHumid: ${h}%\n\nAction: ${msg}`;
-        const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage?chat_id=${TG_CHAT_ID}&text=${encodeURIComponent(text)}`;
-        try {
-            await fetch(url);
-            document.getElementById('notification-status').innerText = "Last Alert sent to Telegram at " + new Date().toLocaleTimeString();
-        } catch (e) { console.error("TG Error"); }
-    }
-
     fetchAgriData();
-    setInterval(fetchAgriData, 20000);
+    setInterval(fetchAgriData, 15000);
 </script>
 </body>
 </html>
+
